@@ -13,6 +13,7 @@ public class guiImplementation {
     private JLayeredPane layeredPane; // Layered pane for managing component layers
     private BufferedImage home; // Picture for the homepage
     private BufferedImage entry;
+    private  Themes currentTheme;
     
    
     public guiImplementation(BufferedImage homeP, BufferedImage addEntryP) {
@@ -31,8 +32,8 @@ public class guiImplementation {
 
         launchHome();
         frame.setVisible(true);
-        
-       
+
+        currentTheme = new Themes(this);
     }
 
     public void launchHome() {
@@ -42,11 +43,11 @@ public class guiImplementation {
         
         JButton addEntry = new JButton("");
         addEntry = setButtons(addEntry, 230, 60, 568, 415);
-        JButton settings = new JButton("");
-        settings = setButtons(settings, 230, 60, 586, 500);
+        JButton theme = new JButton("");
+        theme = setButtons(theme, 230, 60, 586, 500);
         
         layeredPane.add(addEntry, 2);
-        layeredPane.add(settings, 3);
+        layeredPane.add(theme, 3);
 
         layeredPane.revalidate();
       
@@ -58,18 +59,13 @@ public class guiImplementation {
             }
         });
          
-         settings.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                System.out.println("SETTINGS");
-             }
-         });
-         
-         
-        
+        theme.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                currentTheme.launchPage();
+            }
+        });
     }
 
-    
-    
     public void journalPage() {
     	 layeredPane.removeAll();
 
@@ -147,8 +143,8 @@ public class guiImplementation {
     public static void main(String[] args) {
         try {
             // Load the homepage image
-            BufferedImage home = ImageIO.read(new File("src/homepage.jpg"));
-            BufferedImage addEntry = ImageIO.read(new File("src/addEntry.png"));
+            BufferedImage home = ImageIO.read(new File("homepage.png"));
+            BufferedImage addEntry = ImageIO.read(new File("addEntry.png"));
             new guiImplementation(home, addEntry);
         } catch (IOException e) {
             System.out.println("Error: Unable to load image(s).");
