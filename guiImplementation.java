@@ -67,59 +67,78 @@ public class guiImplementation {
     }
 
     public void journalPage() {
-    	 layeredPane.removeAll();
+        layeredPane.removeAll();
+        displayPage(entry);
+        layeredPane.setLayout(null); 
 
-         displayPage(entry);
-         
-         JButton happy = new JButton("");
-         happy = setButtons(happy, 131, 109, 1200, 34);
-         
-         JButton anxious = new JButton("");
-         anxious = setButtons(anxious, 131, 109, 1200, 201);
-         
-         JButton angry = new JButton("");
-         angry = setButtons(angry, 131, 109, 1200, 368);
-        
-         
-         JButton ennui = new JButton("");
-         ennui = setButtons(ennui, 131, 109, 1200, 543);
-         
-         
-         
-         
-         layeredPane.add(happy, 2);
-         layeredPane.add(anxious, 3);
-         layeredPane.add(angry, 4);
-         layeredPane.add(ennui, 5);
+        //buttons
+        JButton happy = setButtons(new JButton(), 131, 109, 1200, 34);
+        JButton anxious = setButtons(new JButton(), 131, 109, 1200, 201);
+        JButton angry = setButtons(new JButton(), 131, 109, 1200, 368);
+        JButton ennui = setButtons(new JButton(), 131, 109, 1200, 543);
+        JButton enter = setButtons(new JButton(), 164, 46, 986, 712);
 
-         layeredPane.revalidate();
        
-         layeredPane.repaint();
+        JLabel label = new JLabel("Enter your thoughts:");
+        label.setBounds(500, 180, 300, 30);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setForeground(Color.BLACK);
+        layeredPane.add(label, JLayeredPane.DEFAULT_LAYER);
+
+        
+        JTextArea textArea = new JTextArea();
+        textArea.setFont(new Font("Arial", Font.PLAIN, 18));
+        textArea.setForeground(Color.BLACK);
+        textArea.setBackground(Color.WHITE);
+        textArea.setCaretColor(Color.BLACK);
+        textArea.setLineWrap(true);      
+        textArea.setWrapStyleWord(true);  
+        textArea.setOpaque(true);      
+        
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(180, 215, 940, 450); 
+        layeredPane.add(scrollPane, JLayeredPane.PALETTE_LAYER);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        happy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               System.out.println("happy");
+            }
+        });
          
-          happy.addActionListener(new ActionListener() {
+         anxious.addActionListener(new ActionListener() {
              public void actionPerformed(ActionEvent e) {
-                System.out.println("happy");
+           	  System.out.println("anxious");
              }
          });
-          
-          anxious.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-            	  System.out.println("anxious");
-              }
-          });
-    	
-          angry.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-            	  System.out.println("angry");
-              }
-          });
-          ennui.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-            	  System.out.println("ennui");
-              }
-          });
-    	
+   	
+         angry.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+           	  System.out.println("angry");
+             }
+         });
+         ennui.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+           	  System.out.println("ennui");
+             }
+         });       
+        
+        enter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	 System.out.println("User input: " + textArea.getText());
+            }
+        });        
+
+        layeredPane.add(happy);
+        layeredPane.add(anxious);
+        layeredPane.add(angry);
+        layeredPane.add(ennui);
+        layeredPane.add(enter);
+        
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
+
     
     public JButton setButtons(JButton button, int width, int height, int x, int y) {
     	button.setBounds(x, y, width, height);
