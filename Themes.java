@@ -3,51 +3,57 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Themes {
-    private static JLabel backgroundLabel;
-    private static guiImplementation gui;
+    private JLabel backgroundLabel;
+    private guiImplementation gui;
 
     public Themes(guiImplementation g) {
         gui = g;
     }
 
     public void launchPage() {
-        JFrame page = new JFrame();
-        page.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        page.setSize(1366, 768);
-        page.setLayout(null); // use absolute positioning
-        page.setLocationRelativeTo(null);
+        // remove all components from layeredPane
+        gui.getLayeredPane().removeAll();
 
         // background label to hold the image
         backgroundLabel = new JLabel(new ImageIcon("theme-background.png"));
         backgroundLabel.setBounds(0, 0, 1366, 768); // set size to match the frame
-        page.add(backgroundLabel);
+        gui.getLayeredPane().add(backgroundLabel, Integer.valueOf(1));
 
         // buttons
-        JButton teddyButton = createTransparentButton("theme-background.png", 721, 210, 230, 60);
-        page.add(teddyButton);
-        JButton floralButton = createTransparentButton("floral-theme-bg.png", 721, 307, 230, 60);
-        page.add(floralButton);
-        JButton bakeryButton = createTransparentButton("bakery-theme-bg.png", 721, 403, 230, 60);
-        page.add(bakeryButton);
-        JButton holidayButton = createTransparentButton("holiday-theme-bg.png", 1020, 210, 230, 60);
-        page.add(holidayButton);
-        JButton gothicButton = createTransparentButton("gothic-theme-bg.png", 1020, 307, 230, 60);
-        page.add(gothicButton);
-        JButton plantButton = createTransparentButton("plant-theme-bg.png", 1020, 403, 230, 60);
-        page.add(plantButton);
+        JButton teddyButton = createTransparentButton("theme-background.png", "homepage.png", "addEntry.png", 721, 221, 230, 60);
+        gui.getLayeredPane().add(teddyButton, Integer.valueOf(2));
 
-        // back button
-        JButton backButton = createTransparentButton(null, 568, 555, 230, 60);
-        page.add(backButton);
+        JButton floralButton = createTransparentButton("floral-theme-bg.png", "flower-homepage.png", "", 721, 319, 230, 60);
+        gui.getLayeredPane().add(floralButton, Integer.valueOf(2));
 
-        page.setVisible(true);
+        JButton bakeryButton = createTransparentButton("bakery-theme-bg.png", "", "", 721, 417, 230, 60);
+        gui.getLayeredPane().add(bakeryButton, Integer.valueOf(2));
+
+        JButton holidayButton = createTransparentButton("holiday-theme-bg.png", "", "", 1020, 221, 230, 60);
+        gui.getLayeredPane().add(holidayButton, Integer.valueOf(2));
+
+        JButton gothicButton = createTransparentButton("gothic-theme-bg.png", "", "", 1020, 319, 230, 60);
+        gui.getLayeredPane().add(gothicButton, Integer.valueOf(2));
+
+        JButton plantButton = createTransparentButton("plant-theme-bg.png", "", "", 1020, 417, 230, 60);
+        gui.getLayeredPane().add(plantButton, Integer.valueOf(2));
+
+        // back button to return to home page
+        JButton backButton = createTransparentButton(null, null, null, 568, 555, 230, 60);
+        gui.getLayeredPane().add(backButton, Integer.valueOf(2));
+
+        // refresh the frame to display the updated panel
+        gui.getLayeredPane().revalidate();
+        gui.getLayeredPane().repaint();
     }
 
-    private static void changeBackground(String imagePath) {
-        backgroundLabel.setIcon(new ImageIcon(imagePath)); // update the background image
+    private void changeBackground(String themeImagePath, String homepageImagePath, String journalImagePath) {
+        backgroundLabel.setIcon(new ImageIcon(themeImagePath)); // update the background image
+        gui.changeHomepageTheme(homepageImagePath);
+        gui.changeJournalTheme(journalImagePath);
     }
 
-    public static JButton createTransparentButton(String imagePath, int x, int y, int width, int height) {
+    private JButton createTransparentButton(String themeImage, String homepageImage, String journalImage, int x, int y, int width, int height) {
         JButton button = new JButton();
         button.setOpaque(false);
         button.setContentAreaFilled(false);
@@ -57,10 +63,10 @@ public class Themes {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (imagePath.equals(null)) {
-                    gui.launchHome();
+                if (themeImage == null) {
+                    gui.launchHome(); // go back to home
                 } else {
-                    changeBackground(imagePath);
+                    changeBackground(themeImage, homepageImage, journalImage);
                 }
             }
         });
