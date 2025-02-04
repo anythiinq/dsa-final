@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Journal {
     private List<Entry> entries;
@@ -19,12 +16,8 @@ public class Journal {
         return new ArrayList<>(entries);
     }
 
-    public Entry getEntryByDate(String date) {
-        for (Entry entry : entries) {
-            if (entry.getDate().equals(date)) {
-                return entry;
-            }
-        }
-        return null;
+    public Entry getLatestEntry() {
+        if (entries.isEmpty()) return null;
+        return entries.get(entries.size() - 1);
     }
 }
