@@ -1,23 +1,18 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Journal {
-    private List<Entry> entries;
+    private Map<String, Entry> entries;
 
     public Journal() {
-        this.entries = new ArrayList<>();
+        this.entries = new HashMap<>();
     }
 
-    public void addEntry(Entry entry) {
-        entries.add(entry);
+    public void addEntry(String date, Entry entry) {
+        entries.put(date, entry);
     }
 
-    public List<Entry> getEntries() {
-        return new ArrayList<>(entries);
-    }
-
-    public Entry getLatestEntry() {
-        if (entries.isEmpty()) return null;
-        return entries.get(entries.size() - 1);
+    public Entry getEntryByDate(String date) {
+        return entries.get(date);
     }
 }
