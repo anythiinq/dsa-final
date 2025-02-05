@@ -47,11 +47,14 @@ public class guiImplementation {
         
         JButton addEntry = new JButton("");
         addEntry = setButtons(addEntry, 230, 60, 568, 415);
+        JButton calendar = new JButton("");
+        calendar = setButtons(calendar, 230, 60, 568, 500);
         JButton theme = new JButton("");
-        theme = setButtons(theme, 230, 60, 586, 500);
+        theme = setButtons(theme, 230, 60, 568, 593);
         
         layeredPane.add(addEntry, 2);
-        layeredPane.add(theme, 3);
+        layeredPane.add(calendar, 3);
+        layeredPane.add(theme, 4);
 
         layeredPane.revalidate();
         layeredPane.repaint();
@@ -61,7 +64,13 @@ public class guiImplementation {
                 journalPage();
             }	
         });
-         
+        
+        calendar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		System.out.println("Calendar button successful");
+        	}
+        });
+        
         theme.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	layeredPane.removeAll();
