@@ -24,19 +24,19 @@ public class Themes {
         JButton teddyButton = createTransparentButton("theme-background.png", "homepage.png", "addEntry.png", 721, 221, 230, 60);
         gui.getLayeredPane().add(teddyButton);
 
-        JButton floralButton = createTransparentButton("floral-theme-bg.png", "flower-homepage.png", "", 721, 319, 230, 60);
+        JButton floralButton = createTransparentButton("floral-theme-bg.png", "flower-homepage.png", "floral-journal-background.png", 721, 319, 230, 60);
         gui.getLayeredPane().add(floralButton);
 
         JButton bakeryButton = createTransparentButton("bakery-theme-bg.png", "bakery-homepage.png", "", 721, 417, 230, 60);
         gui.getLayeredPane().add(bakeryButton);
 
-        JButton holidayButton = createTransparentButton("holiday-theme-bg.png", "holiday-homepage.png", "", 1020, 221, 230, 60);
+        JButton holidayButton = createTransparentButton("holiday-theme-bg.png", "holiday-homepage.png", "holiday-journal-background.png", 1020, 221, 230, 60);
         gui.getLayeredPane().add(holidayButton);
 
-        JButton gothicButton = createTransparentButton("gothic-theme-bg.png", "gothic-homepage.png", "", 1020, 319, 230, 60);
+        JButton gothicButton = createTransparentButton("gothic-theme-bg.png", "gothic-homepage.png", "gothic-journal-background.png", 1020, 319, 230, 60);
         gui.getLayeredPane().add(gothicButton);
 
-        JButton plantButton = createTransparentButton("plant-theme-bg.png", "plant-homepage.png", "", 1020, 417, 230, 60);
+        JButton plantButton = createTransparentButton("plant-theme-bg.png", "plant-homepage.png", "plant-journal-background.png", 1020, 417, 230, 60);
         gui.getLayeredPane().add(plantButton);
 
         // back button to return to home page
