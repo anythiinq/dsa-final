@@ -50,9 +50,9 @@ public class guiImplementation {
         layeredPane.removeAll();
         displayPage(home);
 
-        JButton addEntry = setTransparentButton(new JButton(""), 230, 60, 568, 415);
-        JButton calendarButton = setTransparentButton(new JButton("Calendar"), 230, 60, 586, 620);
-        JButton theme = setTransparentButton(new JButton(""), 230, 60, 586, 500);
+        JButton addEntry = setTransparentButton(new JButton(""), 230, 60, 568, 408);
+        JButton calendarButton = setTransparentButton(new JButton(""), 230, 60, 568, 501);
+        JButton theme = setTransparentButton(new JButton(""), 230, 60, 568, 593);
 
         layeredPane.add(addEntry, Integer.valueOf(2));
         layeredPane.add(calendarButton, Integer.valueOf(3));
@@ -70,7 +70,7 @@ public class guiImplementation {
         layeredPane.removeAll();
         displayPage(calendarImage);
 
-        JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+        JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
         layeredPane.add(backButton, Integer.valueOf(2));
 
         int xStart = 268; 
