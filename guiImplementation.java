@@ -173,6 +173,7 @@ public void journalPage() {
                 calendar.addEntry(today, entry);
                 
                 System.out.println("Journal Entry Saved: " + journalText);
+                launchHome();
             } else {
                 System.out.println("Please select a mood and enter some text before saving.");
             }
