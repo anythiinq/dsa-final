@@ -122,6 +122,7 @@ public class guiImplementation {
 
         backButton.addActionListener(e -> launchHome());
     }
+    
 private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> weeklyMoods) {
     LinkedList<String> moods = weeklyMoods.get(week);
 
@@ -146,7 +147,7 @@ private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> we
         }
     }
 
-    // Generate summary message
+    
     String message = "You were really " + mostCommonMood + " this week.\nHere are some tips: ";
     switch (mostCommonMood) {
         case "happy":
