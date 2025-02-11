@@ -100,11 +100,73 @@ public class guiImplementation {
             layeredPane.add(dateButton, Integer.valueOf(3));
         }
 
+        for (int week = 0; week < 6; week++) {
+            JButton summaryButton = new JButton("Weekly Summary");
+            summaryButton.setBounds(
+                xStart + 7 * (buttonSize + gap),  // Place at the end of the row
+                yStart + week * (buttonSize + gap),
+                150, 
+                buttonSize
+            );
+            summaryButton.setOpaque(true);
+            summaryButton.setBackground(new Color(220, 200, 180));  // Slightly darker neutral color
+    
+            int currentWeek = week;
+            summaryButton.addActionListener(e -> showWeeklySummary(currentWeek, weeklyMoods));
+    
+            layeredPane.add(summaryButton, Integer.valueOf(4));
+        }
+
         layeredPane.revalidate();
         layeredPane.repaint();
 
         backButton.addActionListener(e -> launchHome());
     }
+private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> weeklyMoods) {
+    LinkedList<String> moods = weeklyMoods.get(week);
+
+    if (moods == null || moods.isEmpty()) {
+        JOptionPane.showMessageDialog(frame, "Summary Unavailable. No entries for this week.");
+        return;
+    }
+
+    // Find most common mood
+    HashMap<String, Integer> moodCounts = new HashMap<>();
+    for (String mood : moods) {
+        moodCounts.put(mood, moodCounts.getOrDefault(mood, 0) + 1);
+    }
+
+    String mostCommonMood = moods.get(0);
+    int maxCount = 0;
+
+    for (String mood : moodCounts.keySet()) {
+        if (moodCounts.get(mood) > maxCount) {
+            mostCommonMood = mood;
+            maxCount = moodCounts.get(mood);
+        }
+    }
+
+    // Generate summary message
+    String message = "You were really " + mostCommonMood + " this week.\nHere are some tips: ";
+    switch (mostCommonMood) {
+        case "happy":
+            message += "Keep up the positive mindset! Maybe try journaling more.";
+            break;
+        case "anxious":
+            message += "Take deep breaths and go for a walk. Relaxation exercises might help.";
+            break;
+        case "angry":
+            message += "Try some calming techniques, like listening to music or meditation.";
+            break;
+        case "ennui":
+            message += "Find something exciting to do! Maybe take up a new hobby.";
+            break;
+        default:
+            message += "Keep tracking your moods and see how they evolve over time.";
+    }
+
+    JOptionPane.showMessageDialog(frame, message);
+}
 
 public void journalPage() {
     layeredPane.removeAll();
