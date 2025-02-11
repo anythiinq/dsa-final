@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.LinkedList;
 
 public class guiImplementation {
     private JFrame frame;
@@ -70,7 +71,7 @@ public void launchCalendar() {
     layeredPane.removeAll();
     displayPage(calendarImage);
 
-    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+    JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
     layeredPane.add(backButton, Integer.valueOf(2));
 
     int xStart = 268;  
