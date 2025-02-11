@@ -72,6 +72,7 @@ public class guiImplementation {
 
         JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
         layeredPane.add(backButton, Integer.valueOf(2));
+        HashMap<Integer, LinkedList<String>> weeklyMoods = new HashMap<>();
 
         int xStart = 268; 
         int yStart = 160; 
@@ -79,6 +80,10 @@ public class guiImplementation {
         int gap = 5; 
         int daysInMonth = calendar.getDaysInMonth();
         int firstDayOfMonth = calendar.getFirstDayOfMonth();
+
+        for (int week = 0; week < 6; week++) {
+            weeklyMoods.put(week, new LinkedList<>());
+        }
 
         for (int day = 1; day <= daysInMonth; day++) {
             int row = (day + firstDayOfMonth - 2) / 7;
