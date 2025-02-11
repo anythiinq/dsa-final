@@ -66,67 +66,75 @@ public class guiImplementation {
         theme.addActionListener(e -> currentTheme.launchPage());
     }
 
-    public void launchCalendar() {
-        layeredPane.removeAll();
-        displayPage(calendarImage);
+public void launchCalendar() {
+    layeredPane.removeAll();
+    displayPage(calendarImage);
 
-        JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
-        layeredPane.add(backButton, Integer.valueOf(2));
-        HashMap<Integer, LinkedList<String>> weeklyMoods = new HashMap<>();
+    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+    layeredPane.add(backButton, Integer.valueOf(2));
 
-        int xStart = 268; 
-        int yStart = 160; 
-        int buttonSize = 115; 
-        int gap = 5; 
-        int daysInMonth = calendar.getDaysInMonth();
-        int firstDayOfMonth = calendar.getFirstDayOfMonth();
+    int xStart = 268;  
+    int yStart = 160;  
+    int buttonSize = 115;  
+    int gap = 5;  
+    int daysInMonth = calendar.getDaysInMonth();
+    int firstDayOfMonth = calendar.getFirstDayOfMonth();
 
-        for (int week = 0; week < 6; week++) {
-            weeklyMoods.put(week, new LinkedList<>());
-        }
+    HashMap<Integer, LinkedList<String>> weeklyMoods = new HashMap<>();
 
-        for (int day = 1; day <= daysInMonth; day++) {
-            int row = (day + firstDayOfMonth - 2) / 7;
-            int col = (day + firstDayOfMonth - 2) % 7;
-
-            JButton dateButton = new JButton(String.valueOf(day));
-            dateButton.setBounds(
-                xStart + col * (buttonSize + gap), 
-                yStart + row * (buttonSize + gap), 
-                buttonSize, 
-                buttonSize
-            );
-            dateButton.setOpaque(true);
-            dateButton.setBorderPainted(false);
-            dateButton.setBackground(getMoodColorForDate(String.valueOf(day)));
-            dateButton.addActionListener(new DateButtonListener(day));
-
-            dateButtons.put(String.valueOf(day), dateButton);
-            layeredPane.add(dateButton, Integer.valueOf(3));
-        }
-
-        for (int week = 0; week < 6; week++) {
-            JButton summaryButton = new JButton("Weekly Summary");
-            summaryButton.setBounds(
-                xStart + 7 * (buttonSize + gap),  // Place at the end of the row
-                yStart + week * (buttonSize + gap),
-                150, 
-                buttonSize
-            );
-            summaryButton.setOpaque(true);
-            summaryButton.setBackground(new Color(220, 200, 180));  // Slightly darker neutral color
-    
-            int currentWeek = week;
-            summaryButton.addActionListener(e -> showWeeklySummary(currentWeek, weeklyMoods));
-    
-            layeredPane.add(summaryButton, Integer.valueOf(4));
-        }
-
-        layeredPane.revalidate();
-        layeredPane.repaint();
-
-        backButton.addActionListener(e -> launchHome());
+    for (int week = 0; week < 6; week++) {
+        weeklyMoods.put(week, new LinkedList<>());
     }
+
+    for (int day = 1; day <= daysInMonth; day++) {
+        int row = (day + firstDayOfMonth - 2) / 7;
+        int col = (day + firstDayOfMonth - 2) % 7;
+
+        JButton dateButton = new JButton(String.valueOf(day));
+        dateButton.setBounds(
+            xStart + col * (buttonSize + gap), 
+            yStart + row * (buttonSize + gap), 
+            buttonSize, 
+            buttonSize
+        );
+        dateButton.setOpaque(true);
+        dateButton.setBorderPainted(false);
+        dateButton.setBackground(getMoodColorForDate(String.valueOf(day)));
+        dateButton.addActionListener(new DateButtonListener(day));
+
+        layeredPane.add(dateButton, Integer.valueOf(3));
+
+        Entry entry = calendar.getEntryByDate(String.valueOf(day));
+        if (entry != null) {
+            weeklyMoods.get(row).add(entry.getMood());
+        }
+
+        dateButtons.put(String.valueOf(day), dateButton);
+    }
+
+    // Add weekly summary buttons
+    for (int week = 0; week < 6; week++) {
+        JButton summaryButton = new JButton("Weekly Summary");
+        summaryButton.setBounds(
+            xStart + 7 * (buttonSize + gap),  // Place at the end of the row
+            yStart + week * (buttonSize + gap),
+            150, 
+            buttonSize
+        );
+        summaryButton.setOpaque(true);
+        summaryButton.setBackground(new Color(220, 200, 180));  // Slightly darker neutral color
+
+        int currentWeek = week;
+        summaryButton.addActionListener(e -> showWeeklySummary(currentWeek, weeklyMoods));
+
+        layeredPane.add(summaryButton, Integer.valueOf(4));
+    }
+
+    layeredPane.revalidate();
+    layeredPane.repaint();
+
+    backButton.addActionListener(e -> launchHome());
+}
     
 private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> weeklyMoods) {
     LinkedList<String> moods = weeklyMoods.get(week);
