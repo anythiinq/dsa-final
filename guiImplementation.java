@@ -145,42 +145,107 @@ private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> we
         return;
     }
 
-    // Find most common mood
+    // Count occurrences of each mood
     HashMap<String, Integer> moodCounts = new HashMap<>();
     for (String mood : moods) {
         moodCounts.put(mood, moodCounts.getOrDefault(mood, 0) + 1);
     }
 
-    String mostCommonMood = moods.get(0);
+    // Categorize moods
+    int positiveCount = 0;
+    int negativeCount = 0;
+    String mostCommonMood = "";
     int maxCount = 0;
+    boolean tie = false;
 
-    for (String mood : moodCounts.keySet()) {
-        if (moodCounts.get(mood) > maxCount) {
-            mostCommonMood = mood;
-            maxCount = moodCounts.get(mood);
+    for (Map.Entry<String, Integer> entry : moodCounts.entrySet()) {
+        String mood = entry.getKey();
+        int count = entry.getValue();
+
+        if (mood.equals("happy")) {
+            positiveCount += count;
+        } else {
+            negativeCount += count;  // Any non-happy mood is considered negative
         }
+
+        if (count > maxCount) {
+            mostCommonMood = mood;
+            maxCount = count;
+            tie = false;
+        }
+        else if (count == maxCount) {
+            tie = true;  // Mark that there's a tie
+        }
+        
     }
 
+    // Generate a personalized summary message
+    String message = "";
     
-    String message = "You were really " + mostCommonMood + " this week.\nHere are some tips: ";
-    switch (mostCommonMood) {
-        case "happy":
-            message += "Keep up the positive mindset! Maybe try journaling more.";
-            break;
-        case "anxious":
-            message += "Take deep breaths and go for a walk. Relaxation exercises might help.";
-            break;
-        case "angry":
-            message += "Try some calming techniques, like listening to music or meditation.";
-            break;
-        case "ennui":
-            message += "Find something exciting to do! Maybe take up a new hobby.";
-            break;
-        default:
-            message += "Keep tracking your moods and see how they evolve over time.";
+    if (!tie) {
+        message+=("Your most common emotion this week was ") + (mostCommonMood) + ".\n\n";
+    } else {
+        message+="It looks like you've had a mix of emotions this week.\n\n";
+    }
+
+    if (positiveCount > negativeCount) {
+        message += "\nYou're feeling mostly positive! Keep up the great work. Here's a tip:\n";
+        message += getRandomMessage("happy");
+    } else if (negativeCount > positiveCount) {
+        message += "\nIt looks like you've had a rough week. Here are some tips:\n";
+        if (moodCounts.containsKey("anxious")) {
+            message += getRandomMessage("anxious") + "\n";
+        }
+        if (moodCounts.containsKey("angry")) {
+            message += getRandomMessage("angry") + "\n";
+        }
+        if (moodCounts.containsKey("ennui")) {
+            message += getRandomMessage("ennui") + "\n";
+        }
+    } else {
+        message += "\nIt looks like you had a mix of positive and negative emotions. Try focusing on self-care!\n";
+        message += getRandomMessage(mostCommonMood);
     }
 
     JOptionPane.showMessageDialog(frame, message);
+}
+
+private String getRandomMessage(String mood) {
+    Random rand = new Random();
+    HashMap<String, Set<String>> moodMessages = new HashMap<>();
+
+    moodMessages.put("happy", new HashSet<>(Arrays.asList(
+            "Keep up the positive mindset! Maybe try journaling more.",
+            "Stay engaged with activities that make you happy!",
+            "Surround yourself with positive people and gratitude."
+    )));
+
+    moodMessages.put("anxious", new HashSet<>(Arrays.asList(
+            "Take deep breaths and go for a walk. Relaxation exercises might help.",
+            "Try mindfulness meditation to calm your thoughts.",
+            "Reduce screen time before bed to ease anxiety."
+    )));
+
+    moodMessages.put("angry", new HashSet<>(Arrays.asList(
+            "Try some calming techniques, like listening to music or meditation.",
+            "Express your emotions in a healthy way—talk to someone you trust.",
+            "Engage in physical activity to release built-up tension."
+    )));
+
+    moodMessages.put("ennui", new HashSet<>(Arrays.asList(
+            "Find something exciting to do! Maybe take up a new hobby.",
+            "Try breaking your routine and exploring new interests.",
+            "Reflect on past moments that brought you excitement and joy."
+    )));
+
+   
+    if (!moodMessages.containsKey(mood)) {
+        return "Keep tracking your moods and see how they evolve over time.";
+    }
+
+    
+    List<String> messageList = new ArrayList<>(moodMessages.get(mood));
+    return messageList.get(rand.nextInt(messageList.size()));
 }
 
 public void journalPage() {
@@ -191,10 +256,10 @@ public void journalPage() {
     Entry existingEntry = journal.getEntryByDate(today);
 
     // Mood buttons
-    JButton happy = setMoodButton("happy", 131, 109, 1200, 34);
-    JButton anxious = setMoodButton("anxious", 131, 109, 1200, 201);
-    JButton angry = setMoodButton("angry", 131, 109, 1200, 368);
-    JButton ennui = setMoodButton("ennui", 131, 109, 1200, 543);
+    JButton happy = setMoodButton("happy", 131, 109, 1200, 34, moodLabel);
+    JButton anxious = setMoodButton("anxious", 131, 109, 1200, 201, moodLabel);
+    JButton angry = setMoodButton("angry", 131, 109, 1200, 368, moodLabel);
+    JButton ennui = setMoodButton("ennui", 131, 109, 1200, 543, moodLabel);
     JButton enter = setTransparentButton(new JButton(""), 164, 46, 986, 712);
     JButton backButton = setTransparentButton(new JButton(""), 200, 70, 130, 70);
 
@@ -263,7 +328,7 @@ public void journalPage() {
     backButton.addActionListener(e -> launchHome());
 }
 
-    private JButton setMoodButton(String mood, int width, int height, int x, int y) {
+private JButton setMoodButton(String mood, int width, int height, int x, int y, JLabel moodLabel) {
     JButton button = setTransparentButton(new JButton(""), width, height, x, y);
     button.addActionListener(e -> {
         moodLabel.setText("Mood: " + mood);
