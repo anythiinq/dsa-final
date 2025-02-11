@@ -279,22 +279,31 @@ public void journalPage() {
             return layeredPane;
     }
     public void changeHomepageTheme(String backgroundImage) {
-            try {
-                home = ImageIO.read(new File(backgroundImage));
-            } catch (IOException e) {
-                System.out.println("Error: Unable to load image(s).");
-                e.printStackTrace();
-            }
-            
+        try {
+            home = ImageIO.read(new File(backgroundImage));
+        } catch (IOException e) {
+            System.out.println("Error: Unable to load image(s).");
+            e.printStackTrace();
         }
+        
+    }
+
     public void changeJournalTheme(String backgroundImage) {
-            try {
-                entry = ImageIO.read(new File(backgroundImage));
-            } catch (IOException e) {
-                System.out.println("Error: Unable to load image(s).");
-                e.printStackTrace();
-            }
+        try {
+            entry = ImageIO.read(new File(backgroundImage));
+        } catch (IOException e) {
+            System.out.println("Error: Unable to load image(s).");
+            e.printStackTrace();
         }
+    }
+
+    public void changeCalendarTheme(String backgroundImage) {
+        try {
+            calendarImage = ImageIO.read(new File(backgroundImage));
+        } catch (IOException e) {
+            System.out.println("Error: Unable to load image(s).");
+        }
+    }
 
     public static void main(String[] args) {
     try {
