@@ -9,6 +9,8 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.*;
+import java.util.List;
 
 public class guiImplementation {
     private JFrame frame;
