@@ -12,6 +12,15 @@ import java.util.LinkedList;
 import java.util.*;
 import java.util.List;
 
+/*
+Class name: guiImplementation
+Authors: Sahiti Bulusu, Krystal Sun, Joy Wang
+Instructor: Ms. Shahin
+Pre-requisites: SahitiBulusu_KrystalSun_JoyWang_FinalProject_25_ProjectGraphics
+
+The purpose of this class is to serve as the main class for the pop-up app, Teddy Pen. Users just need to run the main method of this class to run the app.
+/*
+
 public class guiImplementation {
     private JFrame frame;
     private JLayeredPane layeredPane;
@@ -22,6 +31,7 @@ public class guiImplementation {
     private JLabel moodLabel;
     private Themes currentTheme;
 
+    //constructor
     public guiImplementation(BufferedImage homeP, BufferedImage addEntryP, BufferedImage calendarP) {
         frame = new JFrame("TeddyPen");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,31 +58,42 @@ public class guiImplementation {
         launchHome();
         frame.setVisible(true);
     }
-
+ /*
+     * launchHome() launches the homepage (for the current theme)
+     * no return (void)
+     */
     public void launchHome() {
         layeredPane.removeAll();
-        displayPage(home);
+        displayPage(home); //display the homepage
 
+        //create the invisible buttons
         JButton addEntry = setTransparentButton(new JButton(""), 230, 60, 568, 408);
         JButton calendarButton = setTransparentButton(new JButton(""), 230, 60, 568, 501);
         JButton theme = setTransparentButton(new JButton(""), 230, 60, 568, 593);
 
+        //add the different invisible buttons
         layeredPane.add(addEntry, Integer.valueOf(2));
         layeredPane.add(calendarButton, Integer.valueOf(3));
         layeredPane.add(theme, Integer.valueOf(4));
 
+        //update
         layeredPane.revalidate();
         layeredPane.repaint();
 
+        //link the button to different pages and actions
         addEntry.addActionListener(e -> journalPage());
         calendarButton.addActionListener(e -> launchCalendar());
         theme.addActionListener(e -> currentTheme.launchPage());
     }
-
+ /*
+     * launchCalendar() launches the calendar page
+     * no return (void)
+     */
 public void launchCalendar() {
     layeredPane.removeAll();
-    displayPage(calendarImage);
+    displayPage(calendarImage); //displays the calendar page
 
+    //create and add the back button
     JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
     layeredPane.add(backButton, Integer.valueOf(2));
 
@@ -85,6 +106,7 @@ public void launchCalendar() {
 
     HashMap<Integer, LinkedList<String>> weeklyMoods = new HashMap<>();
 
+    //set the calendar and the different buttons for the date
     for (int week = 0; week < 6; week++) {
         weeklyMoods.put(week, new LinkedList<>());
     }
@@ -138,11 +160,15 @@ public void launchCalendar() {
 
     backButton.addActionListener(e -> launchHome());
 }
-    
+
+ /*
+     * showWeeklySummary() displays the weekly summary from the calendar in a pop-up
+     * no return (void)
+     */
 private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> weeklyMoods) {
     LinkedList<String> moods = weeklyMoods.get(week);
 
-    if (moods == null || moods.isEmpty()) {
+    if (moods == null || moods.isEmpty()) { //in the case where there are no moods for the week
         JOptionPane.showMessageDialog(frame, "Summary Unavailable. No entries for this week.");
         return;
     }
@@ -190,6 +216,7 @@ private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> we
         message+="It looks like you've had a mix of emotions this week.\n\n";
     }
 
+    //custom message for if the week was positive or negative
     if (positiveCount > negativeCount) {
         message += "\nYou're feeling mostly positive! Keep up the great work. Here's a tip:\n";
         message += getRandomMessage("happy");
@@ -212,28 +239,36 @@ private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> we
     JOptionPane.showMessageDialog(frame, message);
 }
 
+ /*
+     * getRandomMessage() takes in the mood and returns the message to be displayed in the weekly schedule to increase modularity of the code
+     * return String
+     */
 private String getRandomMessage(String mood) {
     Random rand = new Random();
     HashMap<String, Set<String>> moodMessages = new HashMap<>();
 
+    //happy
     moodMessages.put("happy", new HashSet<>(Arrays.asList(
             "Keep up the positive mindset! Maybe try journaling more.",
             "Stay engaged with activities that make you happy!",
             "Surround yourself with positive people and gratitude."
     )));
 
+    //anxious
     moodMessages.put("anxious", new HashSet<>(Arrays.asList(
             "Take deep breaths and go for a walk. Relaxation exercises might help.",
             "Try mindfulness meditation to calm your thoughts.",
             "Reduce screen time before bed to ease anxiety."
     )));
 
+    //angry
     moodMessages.put("angry", new HashSet<>(Arrays.asList(
             "Try some calming techniques, like listening to music or meditation.",
             "Express your emotions in a healthy way—talk to someone you trust.",
             "Engage in physical activity to release built-up tension."
     )));
 
+    //ennui
     moodMessages.put("ennui", new HashSet<>(Arrays.asList(
             "Find something exciting to do! Maybe take up a new hobby.",
             "Try breaking your routine and exploring new interests.",
@@ -249,12 +284,15 @@ private String getRandomMessage(String mood) {
     List<String> messageList = new ArrayList<>(moodMessages.get(mood));
     return messageList.get(rand.nextInt(messageList.size()));
 }
-
+ /*
+     * journalPage() takes in no parameters and runs the journal page where users can enter in their entries
+     * no return (void)
+     */
 public void journalPage() {
     layeredPane.removeAll();
-    displayPage(entry);
+    displayPage(entry); //display the journal page
 
-    String today = String.valueOf(LocalDate.now().getDayOfMonth());
+    String today = String.valueOf(LocalDate.now().getDayOfMonth()); //organize by day
     Entry existingEntry = journal.getEntryByDate(today);
 
     // Mood buttons
@@ -292,6 +330,7 @@ public void journalPage() {
         moodLabel.setText("Mood: " + existingEntry.getMood()); // Load stored mood
     }
 
+    //Allows users to scroll down to view and write more for their entry
     JScrollPane scrollPane = new JScrollPane(textArea);
     scrollPane.setBounds(180, 215, 940, 450);
     layeredPane.add(scrollPane, JLayeredPane.PALETTE_LAYER);
@@ -329,7 +368,11 @@ public void journalPage() {
 
     backButton.addActionListener(e -> launchHome());
 }
-
+ /*
+     * setMoodButton() takes in (mood reported, width of button, height of button, x position, y position, label to display mood)
+     * alters the JLabel displaying the mood depending on the mood reported
+     * no return (void)
+     */
 private JButton setMoodButton(String mood, int width, int height, int x, int y, JLabel moodLabel) {
     JButton button = setTransparentButton(new JButton(""), width, height, x, y);
     button.addActionListener(e -> {
@@ -340,6 +383,11 @@ private JButton setMoodButton(String mood, int width, int height, int x, int y, 
     return button;
 }
 
+/*
+     * setTransparentButton() takes in (button to be used, width of button, height of button, x position, y position)
+     * creates a transparent button to be used on any page
+     * returns the JButton
+     */
     private JButton setTransparentButton(JButton button, int width, int height, int x, int y) {
         button.setBounds(x, y, width, height);
         button.setOpaque(false);
@@ -347,41 +395,63 @@ private JButton setMoodButton(String mood, int width, int height, int x, int y, 
         button.setBorderPainted(false);
         return button;
     }
-
+/*
+     * displayPage() takes in (image to be displayed)
+     * displays the image of the page
+     * no return (void)
+     */
     private void displayPage(BufferedImage page) {
         JLabel imageLabel = new JLabel(new ImageIcon(page));
         imageLabel.setBounds(0, 0, 1366, 768);
         layeredPane.add(imageLabel, Integer.valueOf(1));
     }
 
+/*
+     * getMoodColorForDate() takes in (date of the entry)
+     * retrieves the mood color associated with a specific date
+     * return Color
+     */
     private Color getMoodColorForDate(String date) {
         Entry entry = calendar.getEntryByDate(date);
-        return (entry != null) ? getMoodColor(entry.getMood()) : new Color(245, 224, 201);
+        return (entry != null) ? getMoodColor(entry.getMood()) : new Color(245, 224, 201); //returns generic color if no color for that day
     }
 
+/*
+     * getMoodColor() takes in (mood)
+     * retrieves the color associated with a specific mood for increased modularity
+     * return Color
+     */
     private Color getMoodColor(String mood) {
         switch (mood) {
             case "happy": return Color.YELLOW;
             case "anxious": return Color.BLUE;
             case "angry": return Color.RED;
             case "ennui": return Color.MAGENTA;
-            default: return new Color(245, 224, 201);
+            default: return new Color(245, 224, 201); //returns default color if no mood
         }
     }
 
+/*
+    * DateButtonListener class handles button clics for selecting a specific date to launch the journal page for the date
+*/
     private class DateButtonListener implements ActionListener {
         private int day;
 
-        public DateButtonListener(int day) {
+        public DateButtonListener(int day) { // Constructs a DateButtonListener for a specific day.
             this.day = day;
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
             launchJournalPageForDate(String.valueOf(day));
         }
     }
 
+/*
+     * launchJournalPageForData() takes in (date that the user wishes to view)
+     * opens the journal page with the saved mood and entry for a certain day
+     * return null (void)
+     */
 private void launchJournalPageForDate(String date) {
     layeredPane.removeAll();
     displayPage(entry);
@@ -462,9 +532,18 @@ private void launchJournalPageForDate(String date) {
     layeredPane.revalidate();
     layeredPane.repaint();
 }
+/*
+     * getLayeredPane() returns the layeredPane used to organize the different elements of the frame
+     */
     public JLayeredPane getLayeredPane() {
             return layeredPane;
     }
+
+/*
+     * changeHomepageTheme() takes in (background image of the new theme)
+     * changes the theme for the homepage page
+     * return null (void)
+     */
     public void changeHomepageTheme(String backgroundImage) {
         try {
             home = ImageIO.read(new File(backgroundImage));
@@ -474,7 +553,11 @@ private void launchJournalPageForDate(String date) {
         }
         
     }
-
+/*
+     * changeJournalTheme() takes in (background image of the new theme)
+     * changes the theme for the journal page
+     * return null (void)
+     */
     public void changeJournalTheme(String backgroundImage) {
         try {
             entry = ImageIO.read(new File(backgroundImage));
@@ -483,7 +566,11 @@ private void launchJournalPageForDate(String date) {
             e.printStackTrace();
         }
     }
-
+/*
+     * changeCalendarTheme() takes in (background image of the new theme)
+     * changes the theme for the calendar page
+     * return null (void)
+     */
     public void changeCalendarTheme(String backgroundImage) {
         try {
             calendarImage = ImageIO.read(new File(backgroundImage));
@@ -492,6 +579,9 @@ private void launchJournalPageForDate(String date) {
         }
     }
 
+/*
+     * main method to run the app
+     */
     public static void main(String[] args) {
     try {
         BufferedImage home = ImageIO.read(new File("homepage.png"));
