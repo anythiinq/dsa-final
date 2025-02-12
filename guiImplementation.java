@@ -19,7 +19,7 @@ Instructor: Ms. Shahin
 Pre-requisites: SahitiBulusu_KrystalSun_JoyWang_FinalProject_25_ProjectGraphics
 
 The purpose of this class is to serve as the main class for the pop-up app, Teddy Pen. Users just need to run the main method of this class to run the app.
-/*
+*/
 
 public class guiImplementation {
     private JFrame frame;
@@ -58,6 +58,7 @@ public class guiImplementation {
         launchHome();
         frame.setVisible(true);
     }
+
  /*
      * launchHome() launches the homepage (for the current theme)
      * no return (void)
