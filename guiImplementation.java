@@ -71,7 +71,7 @@ public void launchCalendar() {
     layeredPane.removeAll();
     displayPage(calendarImage);
 
-    JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
+    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
     layeredPane.add(backButton, Integer.valueOf(2));
 
     int xStart = 268;  
@@ -174,7 +174,7 @@ private void showWeeklySummary(int week, HashMap<Integer, LinkedList<String>> we
             tie = false;
         }
         else if (count == maxCount) {
-            tie = true;  // Mark that there's a tie
+            tie = true;  
         }
         
     }
