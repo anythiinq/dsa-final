@@ -94,7 +94,7 @@ public void launchCalendar() {
     displayPage(calendarImage); //displays the calendar page
 
     //create and add the back button
-    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+    JButton backButton = setTransparentButton(new JButton(""), 164, 46, 51, 667);
     layeredPane.add(backButton, Integer.valueOf(2));
 
     int xStart = 268;  
