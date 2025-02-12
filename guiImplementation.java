@@ -393,7 +393,7 @@ private void launchJournalPageForDate(String date) {
 
     // Mood Label
     JLabel moodLabel = new JLabel("Mood: " + (previousMood.isEmpty() ? "None" : previousMood));
-    moodLabel.setBounds(600, 100, 300, 50);
+    moodLabel.setBounds(600, 100, 200, 120);
     moodLabel.setForeground(new Color(102, 51, 0));
     moodLabel.setFont(new Font("Dialog", Font.BOLD, 24));
     layeredPane.add(moodLabel, Integer.valueOf(2));
@@ -426,10 +426,10 @@ private void launchJournalPageForDate(String date) {
     JButton ennui = setMoodButton("ennui", 131, 109, 1200, 543, moodLabel);
 
     // Enter Button (Save Entry)
-    JButton enter = setTransparentButton(new JButton("Enter Entry"), 164, 46, 986, 712);
+    JButton enter = setTransparentButton(new JButton(""), 164, 46, 986, 712);
 
     // Back Button
-    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+    JButton backButton = setTransparentButton(new JButton(""), 200, 70, 130, 70);
 
     layeredPane.add(happy, Integer.valueOf(3));
     layeredPane.add(anxious, Integer.valueOf(4));
@@ -457,7 +457,6 @@ private void launchJournalPageForDate(String date) {
         launchCalendar(); // Return to Calendar after saving
     });
 
-    // Back Button Action
     backButton.addActionListener(e -> launchCalendar());
 
     layeredPane.revalidate();
