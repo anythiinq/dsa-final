@@ -382,43 +382,87 @@ private JButton setMoodButton(String mood, int width, int height, int x, int y, 
         }
     }
 
-    private void launchJournalPageForDate(String date) {
-        layeredPane.removeAll();
-        displayPage(entry);
+private void launchJournalPageForDate(String date) {
+    layeredPane.removeAll();
+    displayPage(entry);
 
-        Entry entry = calendar.getEntryByDate(date);
-        JLabel moodLabel = new JLabel("Mood: " + (entry != null ? entry.getMood() : "No entry"));
-        moodLabel.setBounds(600, 100, 200, 120);
-        moodLabel.setForeground(new Color(102, 51, 0));
-        moodLabel.setFont(new Font("Dialog", Font.BOLD, 24));
-        layeredPane.add(moodLabel, Integer.valueOf(2));
-        
-        JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font("Arial", Font.PLAIN, 18));
-        textArea.setForeground(Color.BLACK);
-        textArea.setBackground(Color.WHITE);
-        textArea.setCaretColor(Color.BLACK);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        textArea.setOpaque(true);
-    
-        if (entry != null) {
-            textArea.setText(entry.getContent());
+    // Check if an entry exists, otherwise create a new one
+    Entry existingEntry = calendar.getEntryByDate(date);
+    String previousMood = (existingEntry != null) ? existingEntry.getMood() : "";
+    String previousText = (existingEntry != null) ? existingEntry.getContent() : "";
+
+    // Mood Label
+    JLabel moodLabel = new JLabel("Mood: " + (previousMood.isEmpty() ? "None" : previousMood));
+    moodLabel.setBounds(600, 100, 300, 50);
+    moodLabel.setForeground(new Color(102, 51, 0));
+    moodLabel.setFont(new Font("Dialog", Font.BOLD, 24));
+    layeredPane.add(moodLabel, Integer.valueOf(2));
+
+    // Journal Text Entry
+    JLabel label = new JLabel("Enter your thoughts:");
+    label.setBounds(500, 180, 300, 30);
+    label.setFont(new Font("Arial", Font.BOLD, 16));
+    label.setForeground(Color.BLACK);
+    layeredPane.add(label, JLayeredPane.DEFAULT_LAYER);
+
+    JTextArea textArea = new JTextArea(previousText);
+    textArea.setFont(new Font("Arial", Font.PLAIN, 18));
+    textArea.setForeground(Color.BLACK);
+    textArea.setBackground(Color.WHITE);
+    textArea.setCaretColor(Color.BLACK);
+    textArea.setLineWrap(true);
+    textArea.setWrapStyleWord(true);
+    textArea.setOpaque(true);
+
+    JScrollPane scrollPane = new JScrollPane(textArea);
+    scrollPane.setBounds(180, 215, 940, 450);
+    layeredPane.add(scrollPane, JLayeredPane.PALETTE_LAYER);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+    // Mood Selection Buttons
+    JButton happy = setMoodButton("happy", 131, 109, 1200, 34, moodLabel);
+    JButton anxious = setMoodButton("anxious", 131, 109, 1200, 201, moodLabel);
+    JButton angry = setMoodButton("angry", 131, 109, 1200, 368, moodLabel);
+    JButton ennui = setMoodButton("ennui", 131, 109, 1200, 543, moodLabel);
+
+    // Enter Button (Save Entry)
+    JButton enter = setTransparentButton(new JButton("Enter Entry"), 164, 46, 986, 712);
+
+    // Back Button
+    JButton backButton = setTransparentButton(new JButton("Back"), 200, 70, 130, 70);
+
+    layeredPane.add(happy, Integer.valueOf(3));
+    layeredPane.add(anxious, Integer.valueOf(4));
+    layeredPane.add(angry, Integer.valueOf(5));
+    layeredPane.add(ennui, Integer.valueOf(6));
+    layeredPane.add(enter, Integer.valueOf(7));
+    layeredPane.add(backButton, Integer.valueOf(8));
+
+    // Enter Button Action (Save Mood & Text)
+    enter.addActionListener(e -> {
+        String selectedMood = moodLabel.getText().replace("Mood: ", "").trim();
+        String journalText = textArea.getText().trim();
+
+        if (selectedMood.equals("None")) {
+            JOptionPane.showMessageDialog(frame, "Please select a mood before saving.");
+            return;
         }
-    
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(180, 215, 940, 450);
-        layeredPane.add(scrollPane, JLayeredPane.PALETTE_LAYER);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        JButton backButton = setTransparentButton(new JButton(""), 200, 70, 130, 70);
-        layeredPane.add(backButton, Integer.valueOf(3));
+        // Create a new entry or update existing one
+        Entry newEntry = new Entry(selectedMood, journalText);
+        journal.addEntry(date, newEntry);  // Store in Journal
+        calendar.addEntry(date, newEntry); // Store in Calendar
 
-        layeredPane.revalidate();
-        layeredPane.repaint();
+        JOptionPane.showMessageDialog(frame, "Entry saved for " + date);
+        launchCalendar(); // Return to Calendar after saving
+    });
 
-        backButton.addActionListener(e -> launchCalendar());
-    }
+    // Back Button Action
+    backButton.addActionListener(e -> launchCalendar());
+
+    layeredPane.revalidate();
+    layeredPane.repaint();
+}
     public JLayeredPane getLayeredPane() {
             return layeredPane;
     }
